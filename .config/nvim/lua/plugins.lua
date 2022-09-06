@@ -6,7 +6,7 @@ return require('packer').startup(function(use)
   use 'bluz71/vim-moonfly-colors'
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = 'nvim-lua/plenary.nvim'
   }
   use 'itchyny/lightline.vim'
   use 'neovim/nvim-lspconfig'
@@ -16,5 +16,13 @@ return require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+  }
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
+  use "terrortylor/nvim-comment"
+  use { 'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons' }
+  use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
 end)
 

@@ -15,9 +15,33 @@ vim.keymap.set("n", "<C-p>", "<CMD>Telescope find_files<CR>")
 vim.keymap.set("n", "<leader>fg", "<CMD>Telescope live_grep<CR>")
 vim.keymap.set("n", "<leader>fb", "<CMD>Telescope buffers<CR>")
 
--- Tree view
+-- Nvim Tree
 --
-vim.keymap.set("n", "<leader>po", "<CMD>wincmd v<bar> :Ex <bar> :vertical resize 30<CR>")
+require("nvim-tree").setup({
+  view = {
+    side = "right"
+  }
+})
+vim.keymap.set("n", "<C-O>", "<CMD>NvimTreeToggle<CR>")
+
+-- Commenting
+--
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  }
+}
+
+require("nvim_comment").setup({
+  hook = function()
+    require("ts_context_commentstring.internal").update_commentstring()
+  end
+})
+
+-- Neogit
+--
+require('neogit').setup {}
 
 -- LSP
 --
@@ -59,6 +83,9 @@ lspconfig.cssls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
+
+-- Emmet
+lspconfig.emmet_ls.setup {}
 
 -- TailwindCSS
 lspconfig.tailwindcss.setup {
