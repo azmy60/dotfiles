@@ -103,7 +103,7 @@ lspconfig.prismals.setup{}
 
 vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
--- null-ls
+-- null-ls (for formatting)
 --
 local formatting = require("null-ls").builtins.formatting
 require("null-ls").setup({
@@ -111,6 +111,17 @@ require("null-ls").setup({
         formatting.prettierd,
     },
 })
+
+-- see git changes in buffer
+--
+require('gitsigns').setup{}
+
+-- Autotag (html) and Autopair (for brackets)
+--
+require('nvim-ts-autotag').setup{}
+require('nvim-autopairs').setup{
+  disable_filetype = { 'TelescopePrompt', 'vim' }
+}
 
 -- Set up nvim-cmp.
 local cmp = require'cmp'

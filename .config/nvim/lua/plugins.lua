@@ -32,5 +32,8 @@ return require('packer').startup(function(use)
     setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
   }
+  use { 'lewis6991/gitsigns.nvim' }
+  use { 'windwp/nvim-ts-autotag' }
+  use { 'windwp/nvim-autopairs' }
 end)
 
