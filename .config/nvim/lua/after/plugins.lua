@@ -11,7 +11,7 @@ g.lightline = {
 
 -- Telescope
 --
-vim.keymap.set("n", "<C-p>", "<CMD>Telescope find_files<CR>")
+vim.keymap.set("n", "<C-P>", "<CMD>Telescope find_files<CR>")
 vim.keymap.set("n", "<leader>fg", "<CMD>Telescope live_grep<CR>")
 vim.keymap.set("n", "<leader>fb", "<CMD>Telescope buffers<CR>")
 
@@ -22,7 +22,7 @@ require("nvim-tree").setup({
     side = "right"
   }
 })
-vim.keymap.set("n", "<C-O>", "<CMD>NvimTreeToggle<CR>")
+vim.keymap.set("n", "<C-H>", "<CMD>NvimTreeToggle<CR>")
 
 -- Commenting
 --
@@ -45,18 +45,24 @@ require('neogit').setup {}
 
 -- LSP
 --
+vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function()
+local on_attach = function(client)
+  if(client.name == "tsserver") then
+    client.resolved_capabilities.document_formatting = false
+  end
+  
   vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer=0})
 
   -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
   -- vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
   -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
-  -- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
+  vim.keymap.set("n", "<leader>ft", vim.lsp.buf.formatting, {buffer=0})
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
   vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", {buffer=0})
   vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", {buffer=0})
   vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", {buffer=0})
-  vim.keymap.set("n", "<leader>ca", "<cmd> Telescope lsp_code_actions<CR>", {buffer=0})
+  vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", {buffer=0})
 
   vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {buffer=0})
   vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
@@ -92,7 +98,19 @@ lspconfig.tailwindcss.setup {
   on_attach = on_attach,
 }
 
+-- Prisma ORM
+lspconfig.prismals.setup{}
+
 vim.opt.completeopt = {"menu", "menuone", "noselect"}
+
+-- null-ls
+--
+local formatting = require("null-ls").builtins.formatting
+require("null-ls").setup({
+    sources = {
+        formatting.prettierd,
+    },
+})
 
 -- Set up nvim-cmp.
 local cmp = require'cmp'

@@ -10,6 +10,7 @@ return require('packer').startup(function(use)
   }
   use 'itchyny/lightline.vim'
   use 'neovim/nvim-lspconfig'
+  use 'jose-elias-alvarez/null-ls.nvim'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
@@ -24,5 +25,12 @@ return require('packer').startup(function(use)
   use "terrortylor/nvim-comment"
   use { 'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons' }
   use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+  use { 'pantharshit00/vim-prisma' }
+  use {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    ft = { "markdown" },
+  }
 end)
 
