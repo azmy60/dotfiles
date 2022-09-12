@@ -22,7 +22,7 @@ require("nvim-tree").setup({
     side = "right"
   }
 })
-vim.keymap.set("n", "<C-H>", "<CMD>NvimTreeToggle<CR>")
+vim.keymap.set("n", "<C-B>", "<CMD>NvimTreeToggle<CR>")
 
 -- Commenting
 --
