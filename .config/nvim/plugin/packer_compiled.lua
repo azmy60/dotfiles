@@ -94,6 +94,11 @@ _G.packer_plugins = {
     path = "/home/azmy60/.local/share/nvim/site/pack/packer/start/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
   },
+  ["cmp-tw2css"] = {
+    loaded = true,
+    path = "/home/azmy60/.local/share/nvim/site/pack/packer/start/cmp-tw2css",
+    url = "https://github.com/jcha0713/cmp-tw2css"
+  },
   cmp_luasnip = {
     loaded = true,
     path = "/home/azmy60/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
@@ -140,6 +145,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/azmy60/.local/share/nvim/site/pack/packer/start/nvim-comment",
     url = "https://github.com/terrortylor/nvim-comment"
+  },
+  ["nvim-dap"] = {
+    loaded = true,
+    path = "/home/azmy60/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    url = "https://github.com/mfussenegger/nvim-dap"
   },
   ["nvim-lspconfig"] = {
     loaded = true,

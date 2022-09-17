@@ -15,6 +15,7 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/nvim-cmp'
+  use 'jcha0713/cmp-tw2css'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
   use {
@@ -35,5 +36,6 @@ return require('packer').startup(function(use)
   use { 'lewis6991/gitsigns.nvim' }
   use { 'windwp/nvim-ts-autotag' }
   use { 'windwp/nvim-autopairs' }
+  use 'mfussenegger/nvim-dap'
 end)
 

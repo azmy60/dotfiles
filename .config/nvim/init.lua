@@ -1,4 +1,5 @@
 local o = vim.opt
+local g = vim.g
 
 o.guicursor = ""
 
@@ -23,9 +24,13 @@ o.updatetime = 300
 -- lightline
 o.showmode = false
 
+g.mapleader = " "
+
 --vim.api.nvim_set_hl(0, "SignColumn", {})
 --vim.api.nvim_set_hl(0, "ColorColumn", {bg="#333333"})
 
 require("plugins")
-require("after.plugins")
+require("setup_plugins")
+require("setup_cmp")
+require("setup_lsp")
 
