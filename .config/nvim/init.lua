@@ -31,6 +31,6 @@ g.mapleader = " "
 
 require("plugins")
 require("setup_plugins")
-require("setup_cmp")
 require("setup_lsp")
+require("setup_cmp")
 

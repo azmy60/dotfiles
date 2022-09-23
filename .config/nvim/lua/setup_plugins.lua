@@ -1,4 +1,7 @@
+local o = vim.opt
 local g = vim.g
+
+o.completeopt = { "menu", "menuone", "noselect" }
 
 g.mapleader = " "
 
@@ -32,11 +35,26 @@ vim.keymap.set("n", "<C-B>", "<CMD>NvimTreeToggle<CR>")
 
 -- Commenting
 --
-require'nvim-treesitter.configs'.setup {
-  context_commentstring = {
+require 'nvim-treesitter.configs'.setup {
+  ensure_installed = {
+    "css",
+    "lua",
+    "graphql",
+    "html",
+    "javascript",
+    "php",
+    "scss",
+    "sql",
+    "tsx",
+    "typescript",
+    "vue",
+  },
+  context_commentstring = { enable = true },
+  highlight = {
     enable = true,
-    enable_autocmd = false,
-  }
+    additional_vim_regex_highlighting = false
+  },
+  indent = { enable = true },
 }
 
 require("nvim_comment").setup({
@@ -49,25 +67,22 @@ require("nvim_comment").setup({
 --
 require('neogit').setup {}
 
-vim.opt.completeopt = {"menu", "menuone", "noselect"}
-
 -- null-ls (for formatting)
 --
 local formatting = require("null-ls").builtins.formatting
 require("null-ls").setup({
-    sources = {
-        formatting.prettierd,
-    },
+  sources = {
+    formatting.prettierd,
+  },
 })
 
 -- see git changes in buffer
 --
-require('gitsigns').setup{}
+require('gitsigns').setup {}
 
 -- Autotag (html) and Autopair (for brackets)
 --
-require('nvim-ts-autotag').setup{}
-require('nvim-autopairs').setup{
+require('nvim-ts-autotag').setup {}
+require('nvim-autopairs').setup {
   disable_filetype = { 'TelescopePrompt', 'vim' }
 }
-
