@@ -37,7 +37,9 @@ return require('packer').startup(function(use)
   use { 'windwp/nvim-ts-autotag' }
   use { 'windwp/nvim-autopairs' }
   use 'mfussenegger/nvim-dap'
-  use 'williamboman/mason.nvim'
-  use 'williamboman/mason-lspconfig.nvim'
+  use 'ThePrimeagen/vim-be-good'
+  -- use 'williamboman/mason.nvim'
+  -- use 'williamboman/mason-lspconfig.nvim'
+  -- use {'neoclide/coc.nvim', branch = 'release'}
 end)
 

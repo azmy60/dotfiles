@@ -1,9 +1,9 @@
--- mason
---
-require('mason').setup()
-require('mason-lspconfig').setup {
-  ensure_installed = { "sumneko_lua", "tailwindcss" }
-}
+-- -- mason
+-- --
+-- require('mason').setup()
+-- require('mason-lspconfig').setup {
+--   ensure_installed = { "sumneko_lua", "tailwindcss" }
+-- }
 
 -- lspconfig
 --
@@ -65,6 +65,7 @@ lspconfig.phpactor.setup {
 lspconfig.emmet_ls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
+  filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "blade", "php" }
 }
 
 -- Lua
@@ -87,7 +88,17 @@ lspconfig.sumneko_lua.setup {
 }
 
 -- TailwindCSS
-lspconfig.tailwindcss.setup {}
+lspconfig.tailwindcss.setup {
+  -- on_attach = on_attach,
+  -- -- disabling snippets cause it's laggy
+  -- capabilities = capabilities,
+}
 
 -- Prisma ORM
-lspconfig.prismals.setup {}
+lspconfig.prismals.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+-- Blade Formatter
+vim.cmd [[ command! BladeFormatter execute "!blade-formatter --write %" | edit ]]

@@ -20,6 +20,11 @@ g.smoothie_speed_exponentiation_factor = 1.0
 
 -- Telescope
 --
+require('telescope').setup {
+  defaults = {
+    path_display = { "smart" }
+  }
+}
 vim.keymap.set("n", "<C-P>", "<CMD>Telescope find_files<CR>")
 vim.keymap.set("n", "<leader>fg", "<CMD>Telescope live_grep<CR>")
 vim.keymap.set("n", "<leader>fb", "<CMD>Telescope buffers<CR>")
