@@ -1,7 +1,6 @@
 how to setup:
 
 1. run in cli
-2. 
 ```bash
 sudo npm i -g tree-sitter-cli @fsouza/prettierd lua-lan
 git clone --depth 1 https://github.com/wbthomason/packer.nvim\
