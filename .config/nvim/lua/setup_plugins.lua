@@ -22,7 +22,13 @@ g.smoothie_speed_exponentiation_factor = 1.0
 --
 require('telescope').setup {
   defaults = {
-    path_display = { "smart" }
+    path_display = { "smart" },
+    file_ignore_patterns = { "node_modules" },
+    layout_config = {
+      horizontal = {
+        preview_cutoff = 0,
+      },
+    },
   }
 }
 vim.keymap.set("n", "<C-P>", "<CMD>Telescope find_files<CR>")
@@ -72,15 +78,6 @@ require("nvim_comment").setup({
 --
 require('neogit').setup {}
 
--- null-ls (for formatting)
---
-local formatting = require("null-ls").builtins.formatting
-require("null-ls").setup({
-  sources = {
-    formatting.prettierd,
-  },
-})
-
 -- see git changes in buffer
 --
 require('gitsigns').setup {}
@@ -91,3 +88,23 @@ require('nvim-ts-autotag').setup {}
 require('nvim-autopairs').setup {
   disable_filetype = { 'TelescopePrompt', 'vim' }
 }
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+    debug = true,
+    sources = {
+        null_ls.builtins.formatting.prettier,
+    },
+})
+
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<leader>a", mark.add_file)
+vim.keymap.set("n", "<C-m>", ui.toggle_quick_menu)
+
+vim.keymap.set("n", "<C-j>", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<C-k>", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<C-l>", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<C-;>", function() ui.nav_file(4) end)

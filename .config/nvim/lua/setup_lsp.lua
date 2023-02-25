@@ -5,21 +5,36 @@
 --   ensure_installed = { "sumneko_lua", "tailwindcss" }
 -- }
 
+-- Show diagnostic popup on cursor hover
+local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+   vim.diagnostic.open_float(nil, { focusable = false })
+  end,
+  group = diag_float_grp,
+})
+
 -- lspconfig
 --
-vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function(client)
+vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format {async = true}' ]]
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local on_attach = function(client, buffer)
   if (client.name == "tsserver") then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
   end
+  local keymap_opts = { buffer = buffer }
 
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
 
   -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
   -- vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
   -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
-  vim.keymap.set("n", "<leader>ft", vim.lsp.buf.formatting, { buffer = 0 })
+  vim.keymap.set("n", "<leader>ft", function ()
+        vim.lsp.buf.format ({
+            async = true,
+            buffer = 0,
+        })
+    end, { buffer = 0 })
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = 0 })
   vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { buffer = 0 })
   vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { buffer = 0 })
@@ -69,7 +84,7 @@ lspconfig.emmet_ls.setup {
 }
 
 -- Lua
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
   on_attach = on_attach,
   settings = {
     Lua = {
@@ -99,6 +114,47 @@ lspconfig.prismals.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
+
+-- Clojure
+lspconfig.clojure_lsp.setup{}
+
+-- Rust
+lspconfig.rust_analyzer.setup{}
+local opts = {
+  tools = {
+    runnables = {
+      use_telescope = true,
+    },
+    inlay_hints = {
+      auto = true,
+      show_parameter_hints = false,
+      parameter_hints_prefix = "",
+      other_hints_prefix = "",
+    },
+  },
+
+  -- all the opts to send to nvim-lspconfig
+  -- these override the defaults set by rust-tools.nvim
+  -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+  server = {
+    -- on_attach is a callback called when the language server attachs to the buffer
+    on_attach = on_attach,
+    settings = {
+      -- to enable rust-analyzer settings visit:
+      -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+      ["rust-analyzer"] = {
+        -- enable clippy on save
+        checkOnSave = {
+          command = "clippy",
+        },
+      },
+    },
+  },
+}
+require('rust-tools').setup(opts)
+
+-- Svelte
+lspconfig.svelte.setup{}
 
 -- Blade Formatter
 vim.cmd [[ command! BladeFormatter execute "!blade-formatter --write %" | edit ]]
