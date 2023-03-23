@@ -7,9 +7,9 @@ o.guicursor = ""
 o.nu = true
 o.relativenumber = true
 
-o.tabstop = 2
-o.softtabstop = 2
-o.shiftwidth = 2
+o.tabstop = 4
+o.softtabstop = 4
+o.shiftwidth = 4
 o.expandtab = true
 o.smartindent = true
 
@@ -44,6 +44,9 @@ g.mapleader = " "
 
 require("plugins")
 require("setup_plugins")
-require("setup_lsp")
-require("setup_cmp")
-
+require("lsp")
+require("snippets")
+require("theme")
+require('explorer')
+require('git')
+require('mappings')

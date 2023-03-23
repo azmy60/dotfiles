@@ -2,7 +2,6 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
-    use 'psliwka/vim-smoothie'
     use 'bluz71/vim-moonfly-colors'
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
@@ -42,7 +41,4 @@ return require('packer').startup(function(use)
     use 'APZelos/blamer.nvim'
     use("simrat39/rust-tools.nvim")
     use 'hrsh7th/cmp-cmdline'
-    -- use 'williamboman/mason.nvim'
-    -- use 'williamboman/mason-lspconfig.nvim'
-    -- use {'neoclide/coc.nvim', branch = 'release'}
 end)
