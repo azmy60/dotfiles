@@ -30,7 +30,9 @@ require 'nvim-treesitter.configs'.setup {
         "sql",
         "tsx",
         "typescript",
-        "vue",
+        "c",
+        "cpp",
+        "rust",
     },
     context_commentstring = { enable = true },
     highlight = {

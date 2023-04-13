@@ -134,5 +134,10 @@ require('rust-tools').setup(opts)
 -- Svelte
 lspconfig.svelte.setup {}
 
+-- C/C++/Objective-C
+lspconfig.ccls.setup {
+    compilationDatabaseDirectory = "build",
+}
+
 -- Blade Formatter
 vim.cmd [[ command! BladeFormatter execute "!blade-formatter --write %" | edit ]]

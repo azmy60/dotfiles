@@ -16,3 +16,8 @@ vim.keymap.set("n", "<C-;>", function() ui.nav_file(4) end)
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+vim.keymap.set("n", "dl", "d$")
+vim.keymap.set("n", "dh", "d0")
+vim.keymap.set("n", "cl", "c$")
+vim.keymap.set("n", "ch", "c0")
