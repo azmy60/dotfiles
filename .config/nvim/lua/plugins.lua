@@ -8,7 +8,11 @@ return require('packer').startup(function(use)
         requires = 'nvim-lua/plenary.nvim'
     }
     use 'itchyny/lightline.vim'
-    use 'neovim/nvim-lspconfig'
+    use {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        'neovim/nvim-lspconfig'
+    }
     use 'jose-elias-alvarez/null-ls.nvim'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'

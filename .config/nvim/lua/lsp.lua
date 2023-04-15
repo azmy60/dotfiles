@@ -29,6 +29,11 @@ local on_attach = function(client, buffer)
     vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<CR>", { buffer = 0 })
 end
 
+require("mason").setup()
+require("mason-lspconfig").setup({
+    automatic_installation = true
+})
+
 local lspconfig = require('lspconfig')
 
 -- JS / JSX / TS / TSX
