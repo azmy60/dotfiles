@@ -28,14 +28,7 @@ o.showmode = false
 o.completeopt = "menuone,noinsert,noselect"
 
 -- System clipboard
-local clip = "/mnt/c/Windows/System32/clip.exe"
-if vim.fn.executable(clip) == 1 then
-    local wslyank = api.nvim_create_augroup("WSLYank", { clear = true })
-    api.nvim_create_autocmd("TextYankPost", {
-        command = "if v:event.operator ==# 'y' | call system(\"/mnt/c/Windows/System32/clip.exe\", @0) | endif",
-        group = wslyank,
-    })
-end
+vim.cmd("set clipboard+=unnamedplus")
 
 g.mapleader = " "
 
