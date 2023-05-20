@@ -45,4 +45,5 @@ return require('packer').startup(function(use)
     use 'APZelos/blamer.nvim'
     use("simrat39/rust-tools.nvim")
     use 'hrsh7th/cmp-cmdline'
+    use 'stevearc/dressing.nvim'
 end)
