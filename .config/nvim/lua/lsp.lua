@@ -24,6 +24,7 @@ local on_attach = function(client, buffer)
     vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { buffer = 0 })
 
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { buffer = 0 })
+    vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { buffer = 0 })
     vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { buffer = 0 })
     vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { buffer = 0 })
     vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<CR>", { buffer = 0 })
@@ -90,16 +91,19 @@ lspconfig.lua_ls.setup {
 }
 
 -- TailwindCSS
-lspconfig.tailwindcss.setup {}
+lspconfig.tailwindcss.setup {
+    on_attach = on_attach,
+}
 
 -- Prisma ORM
 lspconfig.prismals.setup {
     on_attach = on_attach,
-    capabilities = capabilities,
 }
 
 -- Clojure
-lspconfig.clojure_lsp.setup {}
+lspconfig.clojure_lsp.setup {
+    on_attach = on_attach,
+}
 
 -- Rust
 lspconfig.rust_analyzer.setup {}
@@ -137,11 +141,26 @@ local opts = {
 require('rust-tools').setup(opts)
 
 -- Svelte
-lspconfig.svelte.setup {}
+lspconfig.svelte.setup {
+    on_attach = on_attach,
+}
 
 -- C/C++/Objective-C
 lspconfig.ccls.setup {
     compilationDatabaseDirectory = "build",
+}
+
+lspconfig.unocss.setup {
+    on_attach = on_attach,
+    filetypes = { "html", "javascriptreact", "rescript", "typescriptreact", "vue", "svelte", "astro" },
+}
+
+lspconfig.astro.setup {
+    on_attach = on_attach,
+}
+
+lspconfig.fennel_ls.setup {
+    on_attach = on_attach,
 }
 
 -- Blade Formatter

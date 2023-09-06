@@ -46,4 +46,12 @@ return require('packer').startup(function(use)
     use("simrat39/rust-tools.nvim")
     use 'hrsh7th/cmp-cmdline'
     use 'stevearc/dressing.nvim'
+    use 'Exafunction/codeium.vim'
+    use 'Olical/conjure'
+    use {
+        'laytan/tailwind-sorter.nvim',
+        requires = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' },
+        config = function() require('tailwind-sorter').setup() end,
+        run = 'cd formatter && npm i && npm run build',
+    }
 end)

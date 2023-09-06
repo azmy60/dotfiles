@@ -84,10 +84,11 @@ require("nvim-tree").setup({
     on_attach = on_attach,
     view = {
         side = "right",
-        mappings = {
-            custom_only = false,
-            list = {
-                { key = "l", action = "edit", action_cb = preview_or_open },
+    },
+    renderer = {
+        icons = {
+            show = {
+                folder = false
             }
         }
     }

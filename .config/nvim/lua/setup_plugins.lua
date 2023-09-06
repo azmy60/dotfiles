@@ -33,6 +33,9 @@ require 'nvim-treesitter.configs'.setup {
         "c",
         "cpp",
         "rust",
+        "astro",
+        "clojure",
+        "vue",
     },
     context_commentstring = { enable = true },
     highlight = {
