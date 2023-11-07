@@ -163,5 +163,10 @@ lspconfig.fennel_ls.setup {
     on_attach = on_attach,
 }
 
+-- Python
+lspconfig.pylsp.setup {
+    on_attach = on_attach,
+}
+
 -- Blade Formatter
 vim.cmd [[ command! BladeFormatter execute "!blade-formatter --write %" | edit ]]

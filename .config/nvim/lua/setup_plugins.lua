@@ -16,27 +16,8 @@ require('telescope').setup {
     }
 }
 
--- Commenting
---
 require 'nvim-treesitter.configs'.setup {
-    ensure_installed = {
-        "css",
-        "lua",
-        "graphql",
-        "html",
-        "javascript",
-        "php",
-        "scss",
-        "sql",
-        "tsx",
-        "typescript",
-        "c",
-        "cpp",
-        "rust",
-        "astro",
-        "clojure",
-        "vue",
-    },
+    auto_install = true,
     context_commentstring = { enable = true },
     highlight = {
         enable = true,
@@ -45,6 +26,8 @@ require 'nvim-treesitter.configs'.setup {
     indent = { enable = true },
 }
 
+-- Commenting
+--
 require("nvim_comment").setup({
     hook = function()
         require("ts_context_commentstring.internal").update_commentstring()

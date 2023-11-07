@@ -1,6 +1,33 @@
-vim.keymap.set("n", "<C-P>", "<CMD>Telescope find_files<CR>")
-vim.keymap.set("n", "<leader>fg", "<CMD>Telescope live_grep<CR>")
-vim.keymap.set("n", "<leader>fb", "<CMD>Telescope buffers<CR>")
+local telescope = require('telescope.builtin')
+local used = ""
+local function telescope_find_files()
+  if used ~= "find_files" then
+    used = "find_files"
+    telescope.find_files()
+  else
+    telescope.resume()
+  end
+end
+local function telescope_live_grep()
+  if used ~= "live_grep" then
+    used = "live_grep"
+    telescope.live_grep()
+  else
+    telescope.resume()
+  end
+end
+local function telescope_buffers()
+  if used ~= "buffers" then
+    used = "buffers"
+    telescope.buffers()
+  else
+    telescope.resume()
+  end
+end
+
+vim.keymap.set("n", "<C-P>", telescope_find_files)
+vim.keymap.set("n", "<leader>fg", telescope_live_grep)
+vim.keymap.set("n", "<leader>fb", telescope_buffers)
 
 vim.keymap.set("n", "<C-B>", "<CMD>NvimTreeToggle<CR>")
 

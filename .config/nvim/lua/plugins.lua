@@ -54,4 +54,5 @@ return require('packer').startup(function(use)
         config = function() require('tailwind-sorter').setup() end,
         run = 'cd formatter && npm i && npm run build',
     }
+    use { "catppuccin/nvim", as = "catppuccin" }
 end)
