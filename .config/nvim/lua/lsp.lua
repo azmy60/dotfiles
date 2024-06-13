@@ -37,11 +37,12 @@ require("mason-lspconfig").setup({
 
 local lspconfig = require('lspconfig')
 
--- JS / JSX / TS / TSX
-lspconfig.tsserver.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-}
+-- Replaced with pmizio/typescript-tools.nvim
+-- -- JS / JSX / TS / TSX
+-- lspconfig.tsserver.setup {
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+-- }
 
 -- Vue.js
 lspconfig.vuels.setup {

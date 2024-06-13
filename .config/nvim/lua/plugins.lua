@@ -4,7 +4,7 @@ return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use 'bluz71/vim-moonfly-colors'
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.0',
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
         requires = 'nvim-lua/plenary.nvim'
     }
     use 'itchyny/lightline.vim'
@@ -46,7 +46,10 @@ return require('packer').startup(function(use)
     use("simrat39/rust-tools.nvim")
     use 'hrsh7th/cmp-cmdline'
     use 'stevearc/dressing.nvim'
-    use 'Exafunction/codeium.vim'
+    use {
+        "Exafunction/codeium.vim",
+        commit = '289eb724e5d6fab2263e94a1ad6e54afebefafb2',
+    }
     use 'Olical/conjure'
     use {
         'laytan/tailwind-sorter.nvim',
@@ -55,4 +58,17 @@ return require('packer').startup(function(use)
         run = 'cd formatter && npm i && npm run build',
     }
     use { "catppuccin/nvim", as = "catppuccin" }
+    use {
+        "pmizio/typescript-tools.nvim",
+        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        config = function()
+            require("typescript-tools").setup {}
+        end,
+    }
+    use {
+        "olrtg/nvim-emmet",
+        config = function()
+            vim.keymap.set({ "n", "v" }, '<leader>xe', require('nvim-emmet').wrap_with_abbreviation)
+        end,
+    }
 end)
