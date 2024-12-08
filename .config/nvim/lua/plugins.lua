@@ -47,8 +47,18 @@ return require('packer').startup(function(use)
     use 'hrsh7th/cmp-cmdline'
     use 'stevearc/dressing.nvim'
     use {
-        "Exafunction/codeium.vim",
-        commit = '289eb724e5d6fab2263e94a1ad6e54afebefafb2',
+        "Exafunction/codeium.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+        },
+        config = function()
+            require("codeium").setup({
+                virtual_text = {
+                    enabled = true,
+                },
+            })
+        end
     }
     use 'Olical/conjure'
     use {

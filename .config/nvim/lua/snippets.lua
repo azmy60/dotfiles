@@ -21,6 +21,7 @@ cmp.setup({
         { name = 'cmp-tw2css' },
         { name = 'nvim_lsp' },
         { name = 'luasnip' }, -- For luasnip users.
+        { name = 'codeium' },
     }, {
         { name = 'buffer' }
     })
