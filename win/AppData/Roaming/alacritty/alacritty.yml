@@ -1,0 +1,127 @@
+schemes:
+  # Tokyo Night theme, based on both:
+  #   https://github.com/ghifarit53/tokyonight-vim
+  #   https://github.com/enkia/tokyo-night-vscode-theme
+  tokyo-night: &tokyo-night
+    # Default colors
+    primary:
+      background: '#000000' # background: '#1a1b26'
+      foreground: '#a9b1d6'
+    # Normal colors
+    normal:
+      black:   '#32344a'
+      red:     '#f7768e'
+      green:   '#9ece6a'
+      yellow:  '#e0af68'
+      blue:    '#7aa2f7'
+      magenta: '#ad8ee6'
+      cyan:    '#449dab'
+      white:   '#787c99'
+    # Bright colors
+    bright:
+      black:   '#444b6a'
+      red:     '#ff7a93'
+      green:   '#b9f27c'
+      yellow:  '#ff9e64'
+      blue:    '#7da6ff'
+      magenta: '#bb9af7'
+      cyan:    '#0db9d7'
+      white:   '#acb0d0'
+  tokyo-night-storm: &tokyo-night-storm
+    # Default colors
+    primary:
+      background: '#000000' # background: '#24283b'
+      foreground: '#a9b1d6'
+    # Normal colors
+    normal:
+      black:   '#32344a'
+      red:     '#f7768e'
+      green:   '#9ece6a'
+      yellow:  '#e0af68'
+      blue:    '#7aa2f7'
+      magenta: '#ad8ee6'
+      cyan:    '#449dab'
+      white:   '#9699a8'
+    # Bright colors
+    bright:
+      black:   '#444b6a'
+      red:     '#ff7a93'
+      green:   '#b9f27c'
+      yellow:  '#ff9e64'
+      blue:    '#7da6ff'
+      magenta: '#bb9af7'
+      cyan:    '#0db9d7'
+      white:   '#acb0d0'
+  monokai-charcoal: &monokai-charcoal
+    primary:
+      background: '#000000'
+      foreground: '#FFFFFF'
+    # Normal Colours
+    normal:
+      black:   '#1a1a1a'
+      red:     '#f4005f'
+      green:   '#98e024'
+      yellow:  '#fa8419'
+      blue:    '#9d65ff'
+      magenta: '#f4005f'
+      cyan:    '#58d1eb'
+      white:   '#c4c5b5'
+    bright:
+      black:   '#625e4c'
+      red:     '#f4005f'
+      green:   '#98e024'
+      yellow:  '#e0d561'
+      blue:    '#9d65ff'
+      magenta: '#f4005f'
+      cyan:    '#58d1eb'
+      white:   '#f6f6ef'
+  alabster: &alabster
+    primary:
+      background: "#F7F7F7"
+      foreground: "#434343"
+    cursor:
+      text: "#F7F7F7"
+      cursor: "#434343"
+    normal:
+      black: "#000000"
+      red: "#AA3731"
+      green: "#448C27"
+      yellow: "#CB9000"
+      blue: "#325CC0"
+      magenta: "#7A3E9D"
+      cyan: "#0083B2"
+      white: "#BBBBBB"
+    bright:
+      black: "#777777"
+      red: "#F05050"
+      green: "#60CB00"
+      yellow: "#FFBC5D"
+      blue: "#007ACC"
+      magenta: "#E64CE6"
+      cyan: "#00AACB"
+      white: "#FFFFFF"
+window:
+  # opacity: 0.90 # light mode
+  # opacity: 0.85 # night mode
+  # opacity: 0.75 # night mode 2
+  opacity: 0.65 # night mode 3
+  # opacity: 0.55 # night mode 4
+  # opacity: 0.45 # night mode 5
+  # opacity: 0.35 # night mode 6
+  # opacity: 0 # night mode 7
+  decorations: None
+  startup_mode: Maximized
+font:
+  normal:
+    family: Hack Nerd Font Mono
+key_bindings:
+  - { key: O, mods: Alt, action: SpawnNewInstance }
+  # why this? problem in alacritty and wsl2 combined.
+  # https://github.com/hrsh7th/nvim-cmp/issues/230#issuecomment-923929445
+  - { key: Space, mods: Control, chars: "\x00" }
+# --- DONT MODIFY THIS. THIS IS AUTOMATED ---
+# -- THEMES:
+# - tokyo-night
+# - alabster
+colors: *tokyo-night
+# --- END ---
