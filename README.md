@@ -1,12 +1,9 @@
 # dotfiles
 
-As the AI has once said:
-
-> Your dotfiles are so bad, your computer wants to shut down just to avoid having to read them ever again.
-> ~ roastedby.ai
+> configs and stuff idk...
 
 ---
 
 - best lookin' `git diff`: [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy)
-- better `ls`: [exa](https://github.com/ogham/exa)
+- better `ls`: [eza]([https://github.com/ogham/exa](https://github.com/eza-community/eza))
 - no setup ngrok: [serveo](https://serveo.net/)
