@@ -9,3 +9,4 @@ alias ls=exa
 alias tt=toggle-transparency
 alias nvu="nvm use" # i'm too lazy lmao
 alias wifi=$HOME/dotfiles/wifi.sh
+alias vimdiff="nvim -d"

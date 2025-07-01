@@ -30,6 +30,7 @@ vim.keymap.set("n", "<leader>fg", telescope_live_grep)
 vim.keymap.set("n", "<leader>fb", telescope_buffers)
 
 vim.keymap.set("n", "<C-B>", "<CMD>NvimTreeToggle<CR>")
+vim.keymap.set("n", "<C-N>", "<CMD>NvimTreeFindFileToggle<CR>")
 
 local ui = require("harpoon.ui")
 

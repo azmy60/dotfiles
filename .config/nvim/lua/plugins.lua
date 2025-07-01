@@ -9,11 +9,11 @@ return require('packer').startup(function(use)
     }
     use 'itchyny/lightline.vim'
     use {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason.nvim",
+        "mason-org/mason-lspconfig.nvim",
         'neovim/nvim-lspconfig'
     }
-    use 'jose-elias-alvarez/null-ls.nvim'
+    use 'nvimtools/none-ls.nvim'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
@@ -47,7 +47,7 @@ return require('packer').startup(function(use)
     use 'hrsh7th/cmp-cmdline'
     use 'stevearc/dressing.nvim'
     use {
-        "Exafunction/codeium.nvim",
+        "Exafunction/windsurf.nvim",
         requires = {
             "nvim-lua/plenary.nvim",
             "hrsh7th/nvim-cmp",
@@ -68,17 +68,23 @@ return require('packer').startup(function(use)
         run = 'cd formatter && npm i && npm run build',
     }
     use { "catppuccin/nvim", as = "catppuccin" }
-    use {
-        "pmizio/typescript-tools.nvim",
-        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        config = function()
-            require("typescript-tools").setup {}
-        end,
-    }
+    -- use {
+    --     "pmizio/typescript-tools.nvim",
+    --     requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    --     config = function()
+    --         require("typescript-tools").setup {}
+    --     end,
+    -- }
     use {
         "olrtg/nvim-emmet",
         config = function()
             vim.keymap.set({ "n", "v" }, '<leader>xe', require('nvim-emmet').wrap_with_abbreviation)
+        end,
+    }
+    use {
+        "RRethy/vim-illuminate",
+        config = function()
+            require("illuminate").configure()
         end,
     }
 end)

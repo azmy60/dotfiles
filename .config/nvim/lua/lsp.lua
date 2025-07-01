@@ -1,12 +1,12 @@
 vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format {async = true}' ]]
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function(client, buffer)
-    if (client.name == "tsserver") then
-        client.server_capabilities.documentFormattingProvider = false
-    end
+    -- if (client.name == "ts_ls") then
+    --     client.server_capabilities.documentFormattingProvider = false
+    -- end
     local keymap_opts = { buffer = buffer }
 
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
+    -- vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
 
     -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
     -- vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
@@ -30,19 +30,26 @@ local on_attach = function(client, buffer)
     vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<CR>", { buffer = 0 })
 end
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-    automatic_installation = true
-})
+-- require("mason").setup()
+-- require("mason-lspconfig").setup({
+--     automatic_installation = true
+-- })  
+
+-- vim.lsp.config.some_language = {
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--     settings = {
+--         some_flag = true
+--     },
+-- }
 
 local lspconfig = require('lspconfig')
 
--- Replaced with pmizio/typescript-tools.nvim
 -- -- JS / JSX / TS / TSX
--- lspconfig.tsserver.setup {
---     capabilities = capabilities,
---     on_attach = on_attach,
--- }
+lspconfig.ts_ls.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+}
 
 -- Vue.js
 lspconfig.vuels.setup {
@@ -171,3 +178,9 @@ lspconfig.pylsp.setup {
 
 -- Blade Formatter
 vim.cmd [[ command! BladeFormatter execute "!blade-formatter --write %" | edit ]]
+
+-- mason
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+
