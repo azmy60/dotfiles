@@ -18,7 +18,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
-local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+-- local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
@@ -60,7 +60,7 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. "mytheme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "/home/azmy60/.cargo/bin/alacritty"
+terminal = "alacritty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -242,7 +242,7 @@ awful.screen.connect_for_each_screen(function(s)
             mytextclock,
             volume_widget { widget_type = 'icon_and_text' },
             brightness_widget(),
-            batteryarc_widget{ show_current_level = true },
+            -- batteryarc_widget{ show_current_level = true },
             s.mylayoutbox,
             logout_menu_widget(),
         },
@@ -345,9 +345,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run") end,
               {description = "run dmenu", group = "launcher"}),
 
-    -- Firefox
-    awful.key({ modkey },            "b",     function () awful.util.spawn("firefox") end,
-              {description = "firefox", group = "launcher"}),
+    -- Chrome
+    awful.key({ modkey },            "b",     function () awful.util.spawn("google-chrome") end,
+              {description = "chrome", group = "launcher"}),
 
     awful.key({ modkey }, "x",
               function ()
@@ -598,10 +598,10 @@ client.connect_signal("request::titlebars", function(c)
     }
 end)
 
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
+-- -- Enable sloppy focus, so that focus follows mouse.
+-- client.connect_signal("mouse::enter", function(c)
+--     c:emit_signal("request::activate", "mouse_enter", {raise = false})
+-- end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
