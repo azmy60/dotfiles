@@ -1,3 +1,4 @@
+export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$HOME/app/bin"
 export PATH="$PATH:$HOME/app"
 export PATH="$PATH:$HOME/.local/bin"

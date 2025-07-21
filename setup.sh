@@ -1,75 +1,132 @@
 #!/usr/bin/env bash
-
 set -e
 
-# Colors
+# --- Color Setup ---
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 CYAN=$(tput setaf 6)
 RESET=$(tput sgr0)
 
+# --- Paths ---
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="$PROJECT_DIR/setup.sh.log"
 
-echo "${CYAN}> Dotfiles Setup (Tested on Linux Mint)${RESET}"
-echo "${CYAN}> This script will:${RESET}"
-echo "${CYAN}>   - Symlink .tmux.conf and .config folders${RESET}"
-echo "${CYAN}>   - Update ~/.bashrc to source project .bashrc${RESET}"
-echo "${CYAN}>   - Install snapd if missing${RESET}"
-echo "${CYAN}>   - Install AwesomeWM if missing${RESET}"
-echo "${CYAN}>   - Install Neovim manually to /opt/nvim${RESET}"
-echo "${CYAN}>   - Install Rust/Cargo and Alacritty${RESET}"
-echo "${CYAN}> Continue? (y/n)${RESET}"
+# --- Timestamp Logging ---
+timestamp() { date +"%Y-%m-%d %H:%M:%S"; }
 
-read -r -p "> " CONFIRM
+# --- Dual Output Logging ---
+log_info() {
+  echo -e "${CYAN}> $*${RESET}"
+  echo "$(timestamp) > $*" >> "$LOG_FILE"
+}
+log_success() {
+  echo -e "${GREEN}✔ $*${RESET}"
+  echo "$(timestamp) ✔ $*" >> "$LOG_FILE"
+}
+log_warn() {
+  echo -e "${YELLOW}! $*${RESET}"
+  echo "$(timestamp) ! $*" >> "$LOG_FILE"
+}
 
-if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
-  echo "${YELLOW}! Aborted by user.${RESET}"
-  exit 1
+# --- Help Message (default) ---
+if [[ "$1" != "run" ]]; then
+    cat <<EOF
+
+██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗██╗
+██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝██║
+██║  ██║██║   ██║   ██║   █████╗  ██║██║     █████╗  ███████╗██║
+██║  ██║██║   ██║   ██║   ██╔══╝  ██║██║     ██╔══╝  ╚════██║╚═╝
+██████╔╝╚██████╔╝   ██║   ██║     ██║███████╗███████╗███████║██╗
+╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝╚═╝
+                                                                
+This script installs and configures the following:
+
+EOF
+
+  if [[ "$1" == "what" || "$1" == "whatplsimbegginghelpcomeonpls" ]]; then
+    cat <<EOF
+- ${CYAN}.tmux.conf & .config${RESET} my dotfiles (tmux, nvim, etc)
+- ${CYAN}~/.bashrc${RESET}            adds source line to project bashrc
+- ${CYAN}snapd${RESET}                needed for some packages
+- ${CYAN}AwesomeWM${RESET}            tiling WM
+- ${CYAN}Neovim${RESET}               installed manually to /opt/nvim
+- ${CYAN}Rust & Cargo${RESET}         needed to build Alacritty
+- ${CYAN}Alacritty${RESET}            terminal I like
+- ${CYAN}tmux${RESET}                 you know :)
+- ${CYAN}lua${RESET}                  used by awesome/nvim
+- ${CYAN}compton${RESET}              transparency/shadows
+- ${CYAN}nitrogen${RESET}             wallpaper setter
+- ${CYAN}eza${RESET}                  better ls
+- ${CYAN}barrier${RESET}              share mouse+kb across devices
+
+EOF
+  else
+    cat <<EOF
+- ${CYAN}~/.bashrc${RESET}, ${CYAN}.tmux.conf${RESET} & ${CYAN}.config${RESET} files & folders
+- ${CYAN}snapd${RESET}, ${CYAN}AwesomeWM${RESET}, ${CYAN}Neovim${RESET}, ${CYAN}Rust${RESET}, ${CYAN}Cargo${RESET}, ${CYAN}Alacritty${RESET},
+  ${CYAN}tmux${RESET}, ${CYAN}lua${RESET}, ${CYAN}compton${RESET}, ${CYAN}nitrogen${RESET}, ${CYAN}eza${RESET}, ${CYAN}barrier${RESET}
+
+EOF
+  fi
+
+  cat <<EOF
+Usage:
+  ./setup.sh run            Run the setup
+  ./setup.sh                Show this help message
+  ./setup.sh what           Show what the heck the above are
+  ./setup.sh whatplsimbegginghelpcomeonpls
+
+EOF
+  if [[ "$1" == "whatplsimbegginghelpcomeonpls" ]]; then
+    echo "damn.. slow down next time aight? we cool tho :)"
+  fi
+  exit 0
 fi
 
-# Ask for sudo password upfront
-echo "${CYAN}> Requesting sudo permissions upfront...${RESET}"
+log_info "----- Setup started -----"
+log_info "Requesting sudo permissions upfront..."
 sudo -v
 
-echo "${CYAN}> Starting setup...${RESET}"
+log_info "Starting setup..."
 
-# ---- 0. Ensure snapd is installed ----
-echo "${CYAN}> Checking for Snap${RESET}"
+# ---- 0. Snapd ----
+log_info "Checking for Snap"
 if ! command -v snap &>/dev/null; then
-  echo "${YELLOW}! Snap not found. Installing snapd...${RESET}"
-  sudo apt update
-  sudo apt install snapd -y
-  echo "${GREEN}✔ snapd installed${RESET}"
+  log_warn "Snap not found. Installing..."
+  sudo apt-get update
+  sudo apt-get install snapd -y
+  log_success "snapd installed"
 else
-  echo "${GREEN}✔ snapd is already installed${RESET}"
+  log_success "snapd is already installed"
 fi
 
-# ---- 0b. Install AwesomeWM ----
-echo "${CYAN}> Checking for AwesomeWM${RESET}"
-if ! command -v awesome &>/dev/null; then
-  echo "${YELLOW}! AwesomeWM not found. Installing AwesomeWM...${RESET}"
-  sudo apt update
-  sudo apt install awesome -y
-  echo "${GREEN}✔ AwesomeWM installed${RESET}"
+# ---- 0b. Window Manager ----
+if command -v xrandr &>/dev/null; then
+  log_info "Checking for AwesomeWM"
+  if ! command -v awesome &>/dev/null; then
+    log_warn "AwesomeWM not found. Installing..."
+    sudo apt-get install awesome -y
+    log_success "AwesomeWM installed"
+  else
+    log_success "AwesomeWM is already installed"
+  fi
 else
-  echo "${GREEN}✔ AwesomeWM is already installed${RESET}"
+  log_warn "Skipping AwesomeWM — no GUI detected"
 fi
 
-# ---- 1. Link .tmux.conf ----
-echo "${CYAN}> Checking ~/.tmux.conf${RESET}"
+# ---- 1. .tmux.conf ----
+log_info "Checking ~/.tmux.conf"
 if [ -e "$HOME/.tmux.conf" ]; then
-  echo "${YELLOW}! ~/.tmux.conf exists — skipping${RESET}"
+  log_warn "~/.tmux.conf exists — skipping"
 else
   ln -s "$PROJECT_DIR/.tmux.conf" "$HOME/.tmux.conf"
-  echo "${GREEN}✔ Linked ~/.tmux.conf -> project version${RESET}"
+  log_success "Linked ~/.tmux.conf"
 fi
 
-# ---- 2. Link .config folders ----
-echo "${CYAN}> Linking .config folders${RESET}"
+# ---- 2. .config folders ----
+log_info "Linking .config folders"
 mkdir -p "$HOME/.config"
-
 CONFLICTS=()
-
 for dir in "$PROJECT_DIR/.config/"*/; do
   folder=$(basename "$dir")
   TARGET="$HOME/.config/$folder"
@@ -77,85 +134,120 @@ for dir in "$PROJECT_DIR/.config/"*/; do
 
   if [ -e "$TARGET" ]; then
     CONFLICTS+=("$folder")
-    echo "${YELLOW}! $folder exists — skipping${RESET}"
+    log_warn "$folder exists — skipping"
   else
     ln -s "$SOURCE" "$TARGET"
-    echo "${GREEN}✔ Linked $folder${RESET}"
+    log_success "Linked $folder"
+  fi
+done
+if [ ${#CONFLICTS[@]} -gt 0 ]; then
+  log_warn "These folders already exist:"
+  for c in "${CONFLICTS[@]}"; do
+    log_warn "  - $c"
+  done
+fi
+
+# ---- 2b. .config files ----
+log_info "Linking .config files"
+for file in "$PROJECT_DIR/.config/"*; do
+  [ -d "$file" ] && continue
+  filename=$(basename "$file")
+  TARGET="$HOME/.config/$filename"
+  SOURCE="$file"
+
+  if [ -e "$TARGET" ]; then
+    log_warn "$filename exists — skipping"
+  else
+    ln -s "$SOURCE" "$TARGET"
+    log_success "Linked $filename"
   fi
 done
 
-if [ ${#CONFLICTS[@]} -gt 0 ]; then
-  echo "${YELLOW}! The following folders already exist:${RESET}"
-  for c in "${CONFLICTS[@]}"; do
-    echo "${YELLOW}  - $c${RESET}"
-  done
-  echo "${YELLOW}! Please handle these manually if needed.${RESET}"
-fi
-
-# ---- 3. Append source to .bashrc ----
-echo "${CYAN}> Checking ~/.bashrc for project source${RESET}"
+# ---- 3. .bashrc ----
+log_info "Checking ~/.bashrc for project source"
 BASHRC_LINE="source \"$PROJECT_DIR/.bashrc\""
-
 if grep -Fxq "$BASHRC_LINE" "$HOME/.bashrc"; then
-  echo "${YELLOW}! Already sourced — skipping${RESET}"
+  log_warn "Already sourced — skipping"
 else
   echo "" >> "$HOME/.bashrc"
   echo "# Load custom dotfiles bashrc" >> "$HOME/.bashrc"
   echo "$BASHRC_LINE" >> "$HOME/.bashrc"
-  echo "${GREEN}✔ Added source line${RESET}"
+  log_success "Added source line"
 fi
 
-# ---- 4. Install latest Neovim ----
-echo "${CYAN}> Installing latest Neovim manually${RESET}"
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+# ---- 4. Neovim ----
+NEOVIM_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
+log_warn "Installing/updating Neovim..."
+curl -LO "$NEOVIM_URL"
 sudo rm -rf /opt/nvim
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 rm nvim-linux-x86_64.tar.gz
-echo "${GREEN}✔ Neovim installed to /opt/nvim${RESET}"
+log_success "Neovim installed"
 
-# ---- 5. Install Rust & Cargo ----
-echo "${CYAN}> Installing Rust and Cargo${RESET}"
-if command -v cargo &>/dev/null; then
-  echo "${YELLOW}! Cargo already installed — skipping${RESET}"
-else
+# ---- 5. Rust/Cargo ----
+log_info "Checking Rust/Cargo"
+if ! command -v rustup &>/dev/null; then
+  log_warn "Rustup not found. Installing..."
   curl https://sh.rustup.rs -sSf | sh -s -- -y
-  echo "${GREEN}✔ Rust and Cargo installed${RESET}"
+else
+  rustup update
 fi
+log_success "Rust/Cargo ready"
 
-# ---- 6. Install Alacritty ----
-echo "${CYAN}> Installing Alacritty with Cargo${RESET}"
+# ---- 6. Alacritty ----
+log_info "Checking Alacritty"
 source "$HOME/.cargo/env"
 if command -v alacritty &>/dev/null; then
-  echo "${YELLOW}! Alacritty already installed — skipping${RESET}"
+  log_warn "Alacritty already installed — skipping"
 else
   cargo install alacritty
-  echo "${GREEN}✔ Alacritty installed${RESET}"
+  log_success "Alacritty installed"
 fi
 
-# ---- 7. Install tmux ----
-echo "${CYAN}> Installing latest tmux ${RESET}"
-sudo apt install tmux -y
-echo "${GREEN}✔ Latest tmux installed${RESET}"
+# ---- 7. Tmux ----
+log_info "Installing/upgrading tmux"
+sudo apt-get install tmux -y
+log_success "tmux installed"
 
-# ---- 8. Install lua ----
-echo "${CYAN}> Installing lua ${RESET}"
-sudo apt install lua5.4 -y
-echo "${GREEN}✔ Lua installed${RESET}"
+# ---- 8. Lua ----
+log_info "Installing/upgrading Lua"
+sudo apt-get install lua5.4 -y
+log_success "Lua installed"
 
-# ---- 9. Install compton ----
-echo "${CYAN}> Installing compton for transparency effect${RESET}"
-sudo apt install compton -y
-echo "${GREEN}✔ compton installed${RESET}"
+# ---- 9. Compositor ----
+log_info "Installing/upgrading compton"
+sudo apt-get install compton -y
+log_success "compton installed"
 
-# ---- 10. Install nitrogen ----
-echo "${CYAN}> Installing nitrogen for awesomewm bg${RESET}"
-sudo apt install introgen -y
-echo "${GREEN}✔ nitrogen installed${RESET}"
+# ---- 10. Wallpaper manager ----
+log_info "Installing/upgrading nitrogen"
+sudo apt-get install nitrogen -y
+log_success "nitrogen installed"
 
-# ---- 10. Install eza ----
-echo "${CYAN}> Installing eza for ls replacement${RESET}"
-sudo apt install eza -y
-echo "${GREEN}✔ eza installed${RESET}"
+# ---- 11. eza ----
+log_info "Installing/upgrading eza"
+if ! command -v eza &>/dev/null; then
+  sudo apt-get install eza -y || cargo install eza
+  log_success "eza installed"
+else
+  log_success "eza already installed"
+fi
 
+# ---- 12. Barrier ----
+log_info "Installing/upgrading barrier"
+sudo apt-get install barrier -y
+log_success "barrier installed"
+
+log_info "----- Setup completed -----"
 echo "${CYAN}> Setup complete! Open a new terminal or run: source ~/.bashrc${RESET}"
+echo "${CYAN}> Log saved to: $LOG_FILE${RESET}"
+cat <<EOF
 
+ ██████╗ ██╗  ██╗██╗   ██╗███████╗ █████╗ ██╗  ██╗██╗██╗
+██╔═══██╗██║  ██║╚██╗ ██╔╝██╔════╝██╔══██╗██║  ██║██║██║
+██║   ██║███████║ ╚████╔╝ █████╗  ███████║███████║██║██║
+██║   ██║██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██║██╔══██║╚═╝╚═╝
+╚██████╔╝██║  ██║   ██║   ███████╗██║  ██║██║  ██║██╗██╗
+ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝
+
+EOF

@@ -1,7 +1,64 @@
-
 [window]
-decorations = "none"
+decorations = "None"
 opacity = 0.8
+startup_mode = "Maximized"
 
-[general]
-import = ["$HOME/.config/alacritty/themes/themes/hyper.toml"]
+# # -------- Light mode -----
+#
+# [colors.bright]
+# black = "#777777"
+# blue = "#007ACC"
+# cyan = "#00AACB"
+# green = "#60CB00"
+# magenta = "#E64CE6"
+# red = "#F05050"
+# white = "#FFFFFF"
+# yellow = "#FFBC5D"
+#
+# [colors.normal]
+# black = "#000000"
+# blue = "#325CC0"
+# cyan = "#0083B2"
+# green = "#448C27"
+# magenta = "#7A3E9D"
+# red = "#AA3731"
+# white = "#BBBBBB"
+# yellow = "#CB9000"
+#
+# [colors.primary]
+# background = "#F7F7F7"
+# foreground = "#434343"
+#
+# [colors.cursor]
+# cursor = "#434343"
+# text = "#F7F7F7"
+#
+# # -------- End light mode -----
+
+# -------- Dark mode -----
+
+[colors.bright]
+black = "#444b6a"
+blue = "#7da6ff"
+cyan = "#0db9d7"
+green = "#b9f27c"
+magenta = "#bb9af7"
+red = "#ff7a93"
+white = "#acb0d0"
+yellow = "#ff9e64"
+
+[colors.normal]
+black = "#32344a"
+blue = "#7aa2f7"
+cyan = "#449dab"
+green = "#9ece6a"
+magenta = "#ad8ee6"
+red = "#f7768e"
+white = "#787c99"
+yellow = "#e0af68"
+
+[colors.primary]
+background = "#000000"
+foreground = "#a9b1d6"
+
+# -------- End dark mode ----

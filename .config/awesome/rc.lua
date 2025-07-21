@@ -361,7 +361,11 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+    awful.key({ modkey, "Shift"   }, "s", function () awful.util.spawn_with_shell("sleep 0.5 && scrot -s") end,
+              {description = "take screenshot", group = "awesome"})
+
 )
 
 clientkeys = gears.table.join(
@@ -608,5 +612,14 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- Autostart Applications
+-- compositor
 awful.spawn.with_shell("compton")
-awful.spawn.with_shell("nitrogen --restore")
+-- wallpaper
+awful.spawn.with_shell("sleep 0.5 && nitrogen --restore")
+-- audio equalizer
+awful.spawn.with_shell("pgrep easyeffects > /dev/null || easyeffects --gapplication-service")
+-- create ssl certificate for barriers
+awful.spawn.with_shell('[ -f "$HOME/.local/share/barrier/SSL/Barrier.pem" ] || (cd "$HOME/.local/share/barrier/SSL" && openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout Barrier.pem -out Barrier.pem)')
+-- use mouse and keyboard through desktops with barriers
+awful.spawn.with_shell("pgrep barriers > /dev/null || barriers --disable-client-cert-checking -c $HOME/.config/.barrier.conf")
+

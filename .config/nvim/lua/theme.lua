@@ -3,7 +3,7 @@
 require('catppuccin').setup{
     -- DO NOT MODIFY. THIS IS AUTO GENERATED --
     -- THEMES: latte, macchiato
-    flavour = 'latte',
+    flavour = 'macchiato',
     -- END --
     transparent_background = true,
 }
