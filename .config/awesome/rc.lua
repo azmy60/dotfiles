@@ -621,5 +621,5 @@ awful.spawn.with_shell("pgrep easyeffects > /dev/null || easyeffects --gapplicat
 -- create ssl certificate for barriers
 awful.spawn.with_shell('[ -f "$HOME/.local/share/barrier/SSL/Barrier.pem" ] || (cd "$HOME/.local/share/barrier/SSL" && openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout Barrier.pem -out Barrier.pem)')
 -- use mouse and keyboard through desktops with barriers
-awful.spawn.with_shell("pgrep barriers > /dev/null || barriers --disable-client-cert-checking -c $HOME/.config/.barrier.conf")
+awful.spawn.with_shell("pgrep barriers > /dev/null || barriers --disable-client-cert-checking -c $HOME/.config/barrier.conf")
 
