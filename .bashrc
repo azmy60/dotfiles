@@ -1,3 +1,5 @@
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$HOME/app/bin"
 export PATH="$PATH:$HOME/app"
@@ -12,3 +14,8 @@ alias tt=toggle-transparency
 alias nvu="nvm use" # i'm too lazy lmao
 alias wifi=$HOME/dotfiles/wifi.sh
 alias vimdiff="nvim -d"
+alias ai="source $PROJECT_DIR/ai/run.sh"
+alias what="ai what"
+alias how="ai how"
+alias i="ai i"
+alias roblox="flatpak run org.vinegarhq.Sober"

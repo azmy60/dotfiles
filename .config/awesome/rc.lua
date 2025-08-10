@@ -466,6 +466,7 @@ end
 globalkeys = gears.table.join(globalkeys,
     awful.key({ }, "XF86MonBrightnessUp", function () brightness_widget:inc() end, {description = "increase brightness", group = "custom"}),
     awful.key({ }, "XF86MonBrightnessDown", function () brightness_widget:dec() end, {description = "decrease brightness", group = "custom"}),
+    awful.key({ modkey, "Shift" }, "g", function () awful.spawn.with_shell("steam -bigpicture") end, {description = "Steam Big Picture", group = "custom"}),
     awful.key({ }, "XF86AudioRaiseVolume", function() volume_widget:inc(5) end),
     awful.key({ }, "XF86AudioLowerVolume", function() volume_widget:dec(5) end),
     awful.key({ }, "XF86AudioMute", function() volume_widget:toggle() end)
@@ -621,5 +622,10 @@ awful.spawn.with_shell("pgrep easyeffects > /dev/null || easyeffects --gapplicat
 -- create ssl certificate for barriers
 awful.spawn.with_shell('[ -f "$HOME/.local/share/barrier/SSL/Barrier.pem" ] || (cd "$HOME/.local/share/barrier/SSL" && openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout Barrier.pem -out Barrier.pem)')
 -- use mouse and keyboard through desktops with barriers
-awful.spawn.with_shell("pgrep barriers > /dev/null || barriers --disable-client-cert-checking -c $HOME/.config/barrier.conf")
-
+awful.spawn.with_shell("pgrep barriers > /dev/null || flatpak run org.deskflow.deskflow")
+-- prevent monitor to turn off when program is on fullscreen
+awful.spawn.with_shell("pgrep caffeine > /dev/null || caffeine &")
+-- forward my laptop audio to pc
+awful.spawn.with_shell("pgrep scream > /dev/null || scream &")
+-- mouse sensitivity
+awful.spawn.with_shell("xinput set-prop 9 \"libinput Accel Profile Enabled\" 0 1 0 || xinput set-prop 9 318 0.5")

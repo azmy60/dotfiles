@@ -33,7 +33,7 @@ end
 -- require("mason").setup()
 -- require("mason-lspconfig").setup({
 --     automatic_installation = true
--- })  
+-- })
 
 -- vim.lsp.config.some_language = {
 --     on_attach = on_attach,
@@ -45,16 +45,56 @@ end
 
 local lspconfig = require('lspconfig')
 
--- -- JS / JSX / TS / TSX
-lspconfig.ts_ls.setup {
+-- -- -- JS / JSX / TS / TSX
+-- lspconfig.ts_ls.setup {
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+-- }
+
+-- -- Vue.js
+-- lspconfig.vuels.setup {
+--     on_attach = on_attach,
+-- }
+
+-- -- vim.lsp.config('vuels')
+-- vim.lsp.config('vuels', {
+--   cmd = { 'vue-language-server', '--stdio' },
+--   filetypes = { 'vue' },
+--   on_attach = on_attach,
+-- })
+--
+
+vim.lsp.config("vtsls", {
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+    settings = {
+        vtsls = { tsserver = { globalPlugins = {} } },
+        typescript = {
+            inlayHints = {
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                variableTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                enumMemberValues = { enabled = true },
+            },
+        },
+    },
+    before_init = function(_, config)
+        table.insert(config.settings.vtsls.tsserver.globalPlugins, {
+            name = "@vue/typescript-plugin",
+            location = vim.fn.expand(
+                "$MASON/packages/vue-language-server/node_modules/@vue/language-server"
+            ),
+            languages = { "vue" },
+            configNamespace = "typescript",
+            enableForWorkspaceTypeScriptVersions = true,
+        })
+    end,
     capabilities = capabilities,
     on_attach = on_attach,
-}
+})
 
--- Vue.js
-lspconfig.vuels.setup {
-    on_attach = on_attach,
-}
+vim.lsp.enable("vue_ls")
 
 -- CSS / SASS / LESS
 lspconfig.cssls.setup {
@@ -182,5 +222,3 @@ vim.cmd [[ command! BladeFormatter execute "!blade-formatter --write %" | edit ]
 -- mason
 require("mason").setup()
 require("mason-lspconfig").setup()
-
-
