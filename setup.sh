@@ -57,7 +57,6 @@ EOF
 - ${CYAN}compton${RESET}              transparency/shadows
 - ${CYAN}nitrogen${RESET}             wallpaper setter
 - ${CYAN}eza${RESET}                  better ls
-- ${CYAN}barrier${RESET}              share mouse+kb across devices
 - ${CYAN}caffeine${RESET}             keep the monitor on while program fullscreen
 
 EOF
@@ -65,7 +64,7 @@ EOF
     cat <<EOF
 - ${CYAN}~/.bashrc${RESET}, ${CYAN}.tmux.conf${RESET} & ${CYAN}.config${RESET} files & folders
 - ${CYAN}snapd${RESET}, ${CYAN}AwesomeWM${RESET}, ${CYAN}Neovim${RESET}, ${CYAN}Rust${RESET}, ${CYAN}Cargo${RESET}, ${CYAN}Alacritty${RESET},
-  ${CYAN}tmux${RESET}, ${CYAN}lua${RESET}, ${CYAN}compton${RESET}, ${CYAN}nitrogen${RESET}, ${CYAN}eza${RESET}, ${CYAN}barrier${RESET}, ${CYAN}caffeine${RESET}
+  ${CYAN}tmux${RESET}, ${CYAN}lua${RESET}, ${CYAN}compton${RESET}, ${CYAN}nitrogen${RESET}, ${CYAN}eza${RESET}, ${CYAN}caffeine${RESET}
 
 EOF
   fi
@@ -234,17 +233,12 @@ else
   log_success "eza already installed"
 fi
 
-# ---- 12. Barrier ----
-log_info "Installing/upgrading barrier"
-sudo apt-get install barrier -y
-log_success "barrier installed"
-
-# ---- 13. Caffeine ----
+# ---- 12. Caffeine ----
 log_info "Installing/upgrading caffeine"
 sudo apt-get install caffeine -y
 log_success "caffeine installed"
 
-# ---- 14. chmod ./ai.sh ----
+# ---- 13. chmod ./ai.sh ----
 log_info "chmodding ./ai.sh"
 chmod +x "$PROJECT_DIR/ai.sh"
 log_success "chmodded ./ai.sh. Try running \"ai hey what's up\""
