@@ -47,14 +47,14 @@ EOF
     cat <<EOF
 - ${CYAN}.tmux.conf & .config${RESET} my dotfiles (tmux, nvim, etc)
 - ${CYAN}~/.bashrc${RESET}            adds source line to project bashrc
-- ${CYAN}snapd${RESET}                needed for some packages
+- ${CYAN}flatpak${RESET}              needed for some packages
 - ${CYAN}AwesomeWM${RESET}            tiling WM
 - ${CYAN}Neovim${RESET}               installed manually to /opt/nvim
 - ${CYAN}Rust & Cargo${RESET}         needed to build Alacritty
 - ${CYAN}Alacritty${RESET}            terminal I like
 - ${CYAN}tmux${RESET}                 you know :)
 - ${CYAN}lua${RESET}                  used by awesome/nvim
-- ${CYAN}compton${RESET}              transparency/shadows
+- ${CYAN}picom${RESET}                transparency/shadows
 - ${CYAN}nitrogen${RESET}             wallpaper setter
 - ${CYAN}eza${RESET}                  better ls
 - ${CYAN}caffeine${RESET}             keep the monitor on while program fullscreen
@@ -63,8 +63,8 @@ EOF
   else
     cat <<EOF
 - ${CYAN}~/.bashrc${RESET}, ${CYAN}.tmux.conf${RESET} & ${CYAN}.config${RESET} files & folders
-- ${CYAN}snapd${RESET}, ${CYAN}AwesomeWM${RESET}, ${CYAN}Neovim${RESET}, ${CYAN}Rust${RESET}, ${CYAN}Cargo${RESET}, ${CYAN}Alacritty${RESET},
-  ${CYAN}tmux${RESET}, ${CYAN}lua${RESET}, ${CYAN}compton${RESET}, ${CYAN}nitrogen${RESET}, ${CYAN}eza${RESET}, ${CYAN}caffeine${RESET}
+- ${CYAN}flatpak${RESET}, ${CYAN}AwesomeWM${RESET}, ${CYAN}Neovim${RESET}, ${CYAN}Rust${RESET}, ${CYAN}Cargo${RESET}, ${CYAN}Alacritty${RESET},
+  ${CYAN}tmux${RESET}, ${CYAN}lua${RESET}, ${CYAN}picom${RESET}, ${CYAN}nitrogen${RESET}, ${CYAN}eza${RESET}, ${CYAN}caffeine${RESET}
 
 EOF
   fi
@@ -89,15 +89,16 @@ sudo -v
 
 log_info "Starting setup..."
 
-# ---- 0. Snapd ----
-log_info "Checking for Snap"
-if ! command -v snap &>/dev/null; then
-  log_warn "Snap not found. Installing..."
+# ---- 0. flatpak ----
+log_info "Checking for flatpak"
+if ! command -v flatpak &>/dev/null; then
+  log_warn "flatpak not found. Installing..."
   sudo apt-get update
-  sudo apt-get install snapd -y
-  log_success "snapd installed"
+  sudo apt-get install flatpak gnome-software-plugin-flatpak -y
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  log_success "flatpak installed"
 else
-  log_success "snapd is already installed"
+  log_success "flatpak is already installed"
 fi
 
 # ---- 0b. Window Manager ----
@@ -215,9 +216,10 @@ sudo apt-get install lua5.4 -y
 log_success "Lua installed"
 
 # ---- 9. Compositor ----
-log_info "Installing/upgrading compton"
-sudo apt-get install compton -y
-log_success "compton installed"
+log_info "Installing/upgrading picom"
+sudo apt-get install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev meson ninja-build uthash-dev
+sudo apt-get install picom -y
+log_success "picom installed"
 
 # ---- 10. Wallpaper manager ----
 log_info "Installing/upgrading nitrogen"

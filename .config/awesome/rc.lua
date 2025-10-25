@@ -133,7 +133,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock("%I:%M %p")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -409,7 +409,9 @@ clientkeys = gears.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize horizontally", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "y", awful.placement.centered,
+        {description = "center", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -614,7 +616,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Autostart Applications
 -- compositor
-awful.spawn.with_shell("compton")
+awful.spawn.with_shell("picom --config $HOME/.config/picom.conf")
 -- wallpaper
 awful.spawn.with_shell("sleep 0.5 && nitrogen --restore")
 -- audio equalizer
