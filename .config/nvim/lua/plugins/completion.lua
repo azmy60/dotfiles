@@ -21,14 +21,14 @@ return {
           name = 'Ollama',
           end_point = 'http://localhost:11434/v1/completions',
           model = 'qwen2.5-autocomplete',
-          -- optional = {
-          --   max_tokens = 56,
-          --   top_p = 0.9,
-          -- },
+          optional = {
+            max_tokens = 6,
+            -- top_p = 0.9,
+          },
         },
       },
       virtualtext = {
-        auto_trigger_ft={'lua', 'typescript', 'python', 'javascript', 'rust', 'vimscript', 'json', 'yaml', 'vue'},
+        auto_trigger_ft={'lua', 'typescript', 'python', 'javascript', 'rust', 'vimscript', 'json', 'yaml', 'vue', 'scss', 'css'},
         keymap = {
             -- accept whole completion
             accept = '<Tab>',

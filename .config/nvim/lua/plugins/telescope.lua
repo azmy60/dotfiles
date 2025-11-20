@@ -12,9 +12,15 @@ return {
     require("telescope").setup({
       path_display = { "smart" },
       file_ignore_patterns = { "node_modules" },
-      layout_config = {
-        horizontal = {
-          preview_cutoff = 0,
+      defaults = {
+        dynamic_preview_title = true,
+        layout_config = {
+          horizontal = {
+            preview_cutoff = 0,
+          },
+          vertical = {
+            preview_cutoff = 0,
+          },
         },
       },
       pickers = {
