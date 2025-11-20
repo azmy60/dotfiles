@@ -17,14 +17,14 @@ vim.opt.softtabstop = tabstop
 vim.opt.shiftwidth = tabstop
 
 local function toggleTabStop()
-    if tabstop == 4 then
-        tabstop = 2
-    else
-        tabstop = 4
-    end
-    o.tabstop = tabstop
-    o.softtabstop = tabstop
-    o.shiftwidth = tabstop
+  if tabstop == 4 then
+    tabstop = 2
+  else
+    tabstop = 4
+  end
+  o.tabstop = tabstop
+  o.softtabstop = tabstop
+  o.shiftwidth = tabstop
 end
 
 
@@ -62,61 +62,54 @@ vim.keymap.set("n", "ch", "c0")
 require("config.lazy")
 
 require('nvim-treesitter.configs').setup {
-    auto_install = true,
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false
-    },
-    indent = { enable = true },
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false
+  },
+  indent = { enable = true },
 }
 
 require("lsp")
+
 -- require('ts_context_commentstring').setup {}
 -- vim.g.skip_ts_context_commentstring_module = true
 
+local function ollama_run(model)
+  if not model or model == "" then
+    return
+  end
 
+  vim.fn.jobstart({
+    "curl",
+    "-s",
+    "http://localhost:11434/api/run",
+    "-d",
+    string.format('{"model":"%s"}', model),
+  }, {
+      detach = true,
+      on_exit = function()
+        vim.schedule(function()
+          vim.notify("Ollama model started: " .. model)
+        end)
+      end,
+      -- ignore all stdout / stderr
+      stdout_buffered = false,
+      stderr_buffered = false,
+    })
+end
 
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    ollama_run("qwen2.5-coder:7b")
+  end,
+})
 
+vim.api.nvim_create_autocmd("InsertEnter", {
+  once = true,
+  callback = function()
+    vim.cmd("Minuet virtualtext enable")
+    vim.cmd("Minuet cmp enable")
+  end,
+})
 
-
-
-
-
-
-
-
-
-
-
-
--- local o = vim.opt
--- local g = vim.g
--- local api = vim.api
--- --vim.api.nvim_set_hl(0, "SignColumn", {})
--- --vim.api.nvim_set_hl(0, "ColorColumn", {bg="#333333"})
---
--- -- if vim.fn.has("wsl") then
--- --     vim.cmd([[
--- --         let g:clipboard = {
--- --             \   'name': 'WslClipboard',
--- --             \   'copy': {
--- --             \      '+': 'clip.exe',
--- --             \      '*': 'clip.exe',
--- --             \    },
--- --             \   'paste': {
--- --             \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
--- --             \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
--- --             \   },
--- --             \   'cache_enabled': 0,
--- --             \ }
--- --     ]])
--- -- end
---
--- require("plugins")
--- require("setup_plugins")
--- require("lsp")
--- require("snippets")
--- require("theme")
--- require('explorer')
--- require('git')
--- require('mappings')
