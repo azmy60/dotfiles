@@ -1,85 +1,115 @@
-local o = vim.opt
-local g = vim.g
-local api = vim.api
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
-o.guicursor = ""
+vim.opt.guicursor = ""
 
-o.nu = true
-o.relativenumber = true
+-- enable 24-bit colour
+vim.opt.termguicolors = true
 
-local tabstop = 4
-o.tabstop = tabstop
-o.softtabstop = tabstop
-o.shiftwidth = tabstop
+vim.opt.nu = true
+vim.opt.relativenumber = true
+
+local tabstop = 2
+
+vim.opt.tabstop = tabstop
+vim.opt.softtabstop = tabstop
+vim.opt.shiftwidth = tabstop
 
 local function toggleTabStop()
-    if tabstop == 4 then
-        tabstop = 2
-    else
-        tabstop = 4
-    end
-    o.tabstop = tabstop
-    o.softtabstop = tabstop
-    o.shiftwidth = tabstop
+  if tabstop == 4 then
+    tabstop = 2
+  else
+    tabstop = 4
+  end
+  o.tabstop = tabstop
+  o.softtabstop = tabstop
+  o.shiftwidth = tabstop
 end
 
-o.expandtab = true
-o.smartindent = true
 
-o.wrap = false
-o.hlsearch = false
-o.hidden = true
-o.termguicolors = true
-o.scrolloff = 8
-o.colorcolumn = "80"
-o.signcolumn = "yes"
-o.updatetime = 100
-o.ignorecase = true
+vim.opt.expandtab = true
+vim.opt.smartindent = true
 
--- lightline
-o.showmode = false
+vim.opt.wrap = false
+vim.opt.hlsearch = false
+vim.opt.hidden = true
+vim.opt.termguicolors = true
+vim.opt.scrolloff = 8
+vim.opt.colorcolumn = "80"
+vim.opt.signcolumn = "yes"
+vim.opt.updatetime = 100
+vim.opt.ignorecase = true
 
-o.completeopt = "menuone,noinsert,noselect"
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-g.mapleader = " "
-
---vim.api.nvim_set_hl(0, "SignColumn", {})
---vim.api.nvim_set_hl(0, "ColorColumn", {bg="#333333"})
-
--- disable netrw for nvim.tree
-g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1
-
-o.termguicolors = true
+vim.g.mapleader = " "
 
 -- conjure
-g.maplocalleader = ","
+vim.g.maplocalleader = ","
 
 -- System clipboard
 vim.cmd("set clipboard+=unnamedplus")
 
--- if vim.fn.has("wsl") then
---     vim.cmd([[
---         let g:clipboard = {
---             \   'name': 'WslClipboard',
---             \   'copy': {
---             \      '+': 'clip.exe',
---             \      '*': 'clip.exe',
---             \    },
---             \   'paste': {
---             \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
---             \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
---             \   },
---             \   'cache_enabled': 0,
---             \ }
---     ]])
--- end
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
-require("plugins")
-require("setup_plugins")
+vim.keymap.set("n", "dl", "d$")
+vim.keymap.set("n", "dh", "d0")
+vim.keymap.set("n", "cl", "c$")
+vim.keymap.set("n", "ch", "c0")
+
+require("config.lazy")
+
+require('nvim-treesitter.configs').setup {
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false
+  },
+  indent = { enable = true },
+}
+
 require("lsp")
-require("snippets")
-require("theme")
-require('explorer')
-require('git')
-require('mappings')
+
+-- require('ts_context_commentstring').setup {}
+-- vim.g.skip_ts_context_commentstring_module = true
+
+local function ollama_run(model)
+  if not model or model == "" then
+    return
+  end
+
+  vim.fn.jobstart({
+    "curl",
+    "-s",
+    "http://localhost:11434/api/run",
+    "-d",
+    string.format('{"model":"%s"}', model),
+  }, {
+      detach = true,
+      on_exit = function()
+        vim.schedule(function()
+          vim.notify("Ollama model started: " .. model)
+        end)
+      end,
+      -- ignore all stdout / stderr
+      stdout_buffered = false,
+      stderr_buffered = false,
+    })
+end
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    ollama_run("qwen2.5-coder:7b")
+  end,
+})
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+  once = true,
+  callback = function()
+    vim.cmd("Minuet virtualtext enable")
+    vim.cmd("Minuet cmp enable")
+  end,
+})
+

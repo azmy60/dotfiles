@@ -3,6 +3,20 @@ decorations = "None"
 opacity = 0.8
 startup_mode = "Maximized"
 
+[font]
+size = 16.0
+
+
+[font.normal]
+family = "IosevkaTerm Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "IosevkaTerm Nerd Font Mono"
+
+[font.italic]
+family = "IosevkaTerm Nerd Font Mono"
+
 # # -------- Light mode -----
 #
 # [colors.bright]
