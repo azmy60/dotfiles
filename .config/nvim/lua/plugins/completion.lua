@@ -28,7 +28,7 @@ return {
         },
       },
       virtualtext = {
-        auto_trigger_ft={'lua', 'typescript', 'python', 'javascript', 'rust', 'vimscript', 'json', 'yaml', 'vue', 'scss', 'css'},
+        auto_trigger_ft={'lua', 'typescript', 'python', 'javascript', 'rust', 'vimscript', 'json', 'yaml', 'vue', 'scss', 'css', 'sh'},
         keymap = {
             -- accept whole completion
             accept = '<Tab>',
