@@ -13,7 +13,6 @@ export SYSTEMD_EDITOR=nvim
 alias vim=nvim
 alias ls=eza
 alias tt=toggle-transparency
-alias nvu="nvm use" # i'm too lazy lmao
 alias wifi=$HOME/dotfiles/wifi.sh
 alias vimdiff="nvim -d"
 alias ai="source $PROJECT_DIR/ai/run.sh"
@@ -21,3 +20,8 @@ alias what="ai what"
 alias how="ai how"
 alias i="ai i"
 alias roblox="flatpak run org.vinegarhq.Sober"
+alias ai-completion="llama-server \
+  --hf-repo ggml-org/Qwen2.5-Coder-3B-Q8_0-GGUF --hf-file qwen2.5-coder-3b-q8_0.gguf \
+  --port 8012 -ngl 99 -fa on -dt 0.1 \
+  --ubatch-size 512 --batch-size 1024 \
+  --ctx-size 0 --cache-reuse 256"

@@ -59,6 +59,9 @@ vim.keymap.set("n", "dh", "d0")
 vim.keymap.set("n", "cl", "c$")
 vim.keymap.set("n", "ch", "c0")
 
+-- jump between whitespaces in the same line
+vim.keymap.set('n', 'gl', 'f<Space>', { noremap = true })
+
 require("config.lazy")
 
 require('nvim-treesitter.configs').setup {
@@ -74,42 +77,3 @@ require("lsp")
 
 -- require('ts_context_commentstring').setup {}
 -- vim.g.skip_ts_context_commentstring_module = true
-
-local function ollama_run(model)
-  if not model or model == "" then
-    return
-  end
-
-  vim.fn.jobstart({
-    "curl",
-    "-s",
-    "http://localhost:11434/api/run",
-    "-d",
-    string.format('{"model":"%s"}', model),
-  }, {
-      detach = true,
-      on_exit = function()
-        vim.schedule(function()
-          vim.notify("Ollama model started: " .. model)
-        end)
-      end,
-      -- ignore all stdout / stderr
-      stdout_buffered = false,
-      stderr_buffered = false,
-    })
-end
-
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    ollama_run("qwen2.5-coder:7b")
-  end,
-})
-
-vim.api.nvim_create_autocmd("InsertEnter", {
-  once = true,
-  callback = function()
-    vim.cmd("Minuet virtualtext enable")
-    vim.cmd("Minuet cmp enable")
-  end,
-})
-
