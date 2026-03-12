@@ -62,6 +62,9 @@ vim.keymap.set("n", "ch", "c0")
 -- jump between whitespaces in the same line
 vim.keymap.set('n', 'gl', 'f<Space>', { noremap = true })
 
+vim.g.lazyvim_ruby_lsp = "ruby_lsp"
+vim.g.lazyvim_ruby_formatter = "rubocop"
+
 require("config.lazy")
 
 require('nvim-treesitter.configs').setup {
@@ -74,6 +77,7 @@ require('nvim-treesitter.configs').setup {
 }
 
 require("lsp")
+require("autocmd")
 
 -- require('ts_context_commentstring').setup {}
 -- vim.g.skip_ts_context_commentstring_module = true
