@@ -22,6 +22,6 @@ alias i="ai i"
 alias roblox="flatpak run org.vinegarhq.Sober"
 alias ai-completion="llama-server \
   --hf-repo ggml-org/Qwen2.5-Coder-3B-Q8_0-GGUF --hf-file qwen2.5-coder-3b-q8_0.gguf \
-  --port 8012 -ngl 99 -fa on -dt 0.1 \
+  --host 0.0.0.0 --port 8012 -ngl 99 -fa on -dt 0.1 \
   --ubatch-size 512 --batch-size 1024 \
   --ctx-size 0 --cache-reuse 256"
