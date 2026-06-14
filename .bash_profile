@@ -6,6 +6,6 @@ if [[ $(tty) == /dev/tty* ]]; then
 
   start() {
     echo "Starting Hyprland..."
-    exec Hyprland
+    exec start-hyprland
   }
 fi
