@@ -1,15 +1,21 @@
 # dotfiles
 
+## Minimum requirements
+
+- RAM 4GB
+- Disk 32GB
+
 ## Full installation
 
 To automate the process of setting up a new machine:
 
-1. Boot [archlinux](https://archlinux.org/download/) live ISO
+1. Boot [archlinux](https://archlinux.org/download/) live ISO (v2026.11.01)
 2. Run this
 
 ```bash
-curl -fsSL https://azmy60.github.io/dotfiles/install.sh | bash
+curl -fsSL azmy60.github.io/dotfiles/install.sh | bash
 ```
+
 ## Manual installation
 
 On an existing machine, just inspect the config files manually.

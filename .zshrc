@@ -12,8 +12,17 @@ eval "$(mise activate zsh)"
 alias start='start-hyprland'
 alias ls='eza'
 alias vim='nvim'
+# nix-setup disables itself once the nix packages are installed.
 if [[ -o login && -z $WAYLAND_DISPLAY ]]; then
-  echo "Type 'start' to launch Hyprland."
+  if systemctl is-enabled --quiet nix-setup 2>/dev/null; then
+    case $(systemctl show -p ActiveState --value nix-setup) in
+      activating) echo "Not ready yet: Hyprland and the nix packages are still installing. Follow with: journalctl -u nix-setup -f" ;;
+      failed) echo "Installing the nix packages failed. See: journalctl -u nix-setup" ;;
+      *) echo "Not ready yet: the nix packages haven't installed. Start now with: sudo systemctl start nix-setup" ;;
+    esac
+  else
+    echo "Type 'start' to launch Hyprland."
+  fi
 fi
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
