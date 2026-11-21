@@ -16,6 +16,7 @@ curl -fsSLO "$REPO/install.py"
 curl -fsSLO "$REPO/flake.nix"
 curl -fsSLO "$REPO/flake.lock"
 curl -fsSLO "$REPO/ufw-allow-ssh.service"
+curl -fsSLO "$REPO/nix-setup.service"
 curl -fsSL "$REPO/.zshrc" -o zshrc
 curl -fsSLO "$REPO/hyprland.lua"
 curl -fsSLO "$REPO/gitconfig"
@@ -54,12 +55,7 @@ git clone --depth 1 --branch v3.1.0 https://github.com/tmux-plugins/tpm /usr/sha
 # Firewall: ufw can't change rules until it's running, so allow SSH on first boot.
 systemctl enable ufw-allow-ssh.service
 
-# Nix
-if ! grep -q '^experimental-features' /etc/nix/nix.conf; then
-  echo 'experimental-features = nix-command flakes' >>/etc/nix/nix.conf
-fi
-# nixGL detects the machine's GPU drivers, which needs --impure.
-nix profile add --impure --profile /nix/var/nix/profiles/default path:/etc/arch-bootstrap/nix
+systemctl enable nix-setup.service
 EOF
 
 # stdin is the piped script, so prompts must read from the terminal.

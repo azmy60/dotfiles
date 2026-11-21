@@ -1,5 +1,7 @@
 # dotfiles
 
+## Full installation
+
 To automate the process of setting up a new machine:
 
 1. Boot [archlinux](https://archlinux.org/download/) live ISO
@@ -8,6 +10,7 @@ To automate the process of setting up a new machine:
 ```bash
 curl -fsSL https://azmy60.github.io/dotfiles/install.sh | bash
 ```
+## Manual installation
 
 On an existing machine, just inspect the config files manually.
 

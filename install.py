@@ -248,6 +248,7 @@ def main():
         "/etc/arch-bootstrap/nix/flake.nix": "flake.nix",
         "/etc/arch-bootstrap/nix/flake.lock": "flake.lock",
         "/etc/systemd/system/ufw-allow-ssh.service": "ufw-allow-ssh.service",
+        "/etc/systemd/system/nix-setup.service": "nix-setup.service",
         "/etc/skel/.zshrc": "zshrc",
         "/etc/xdg/hypr/hyprland.lua": "hyprland.lua",
         "/etc/gitconfig": "gitconfig",

@@ -1,0 +1,15 @@
+[Unit]
+Description=Install the arch-bootstrap nix packages on first boot
+Wants=network-online.target
+After=network-online.target nix-daemon.socket
+Requires=nix-daemon.socket
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c "grep -q '^experimental-features' /etc/nix/nix.conf || echo 'experimental-features = nix-command flakes' >>/etc/nix/nix.conf"
+# nixGL detects the machine's GPU drivers, which needs --impure.
+ExecStart=/usr/bin/nix profile add --impure --profile /nix/var/nix/profiles/default path:/etc/arch-bootstrap/nix
+ExecStartPost=/usr/bin/systemctl disable nix-setup.service
+
+[Install]
+WantedBy=multi-user.target
