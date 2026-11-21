@@ -2,3 +2,10 @@
 .config/nvim/pack
 setup.sh.log
 
+*.iso
+*.qcow2
+OVMF_VARS*
+*.ports
+*.log
+data/
+pacoloco/cache/

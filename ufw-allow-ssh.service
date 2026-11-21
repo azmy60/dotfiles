@@ -1,0 +1,12 @@
+[Unit]
+Description=Allow SSH through ufw on first boot
+After=ufw.service
+Requires=ufw.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ufw allow ssh
+ExecStartPost=/usr/bin/systemctl disable ufw-allow-ssh.service
+
+[Install]
+WantedBy=multi-user.target

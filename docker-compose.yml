@@ -1,0 +1,11 @@
+services:
+  pacoloco:
+    image: ghcr.io/anatol/pacoloco
+    container_name: pacoloco
+    restart: unless-stopped
+    user: "${PACOLOCO_UID:-1000}:${PACOLOCO_GID:-1000}"
+    ports:
+      - "9129:9129"
+    volumes:
+      - ./pacoloco/pacoloco.yaml:/etc/pacoloco.yaml:Z
+      - ./pacoloco/cache:/var/cache/pacoloco:Z

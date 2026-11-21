@@ -1,0 +1,7 @@
+port: 9129
+cache_dir: /var/cache/pacoloco
+download_timeout: 3600
+repos:
+  archlinux:
+    urls:
+      - https://geo.mirror.pkgbuild.com
