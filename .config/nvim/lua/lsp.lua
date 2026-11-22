@@ -1,3 +1,10 @@
+-- Global, not buffer-local: null-ls starts its own client and never runs the
+-- on_attach below, so a buffer-local mapping is missing wherever it is the only
+-- attached client (css, for one).
+vim.keymap.set("n", "<leader>ft", function()
+  vim.lsp.buf.format({ async = true })
+end)
+
 vim.lsp.config('*', {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
   on_attach = function(client, buffer)
@@ -11,12 +18,6 @@ vim.lsp.config('*', {
     -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
     -- vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
     -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
-    vim.keymap.set("n", "<leader>ft", function()
-      vim.lsp.buf.format({
-        async = true,
-        buffer = 0,
-      })
-    end, { buffer = 0 })
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = 0 })
     vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { buffer = 0 })
     vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { buffer = 0 })

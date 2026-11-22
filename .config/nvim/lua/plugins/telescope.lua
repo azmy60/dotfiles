@@ -1,3 +1,23 @@
+-- Keeps the file name whole and cuts the middle of the directory, like
+-- macOS Finder: /long/path/.../here/filename.txt
+local function middle_truncate_path(_, path)
+  local tail = require("telescope.utils").path_tail(path)
+  local dir = path:sub(1, #path - #tail)
+  -- Roughly the results pane width in the default horizontal layout
+  local max_width = math.floor(vim.o.columns * 0.4) - 4
+  local dir_budget = max_width - #tail
+  if #dir <= dir_budget then
+    return path
+  end
+  if dir_budget < 5 then
+    return tail
+  end
+  local keep = dir_budget - 3
+  local head_len = math.ceil(keep / 2)
+  local tail_len = keep - head_len
+  return dir:sub(1, head_len) .. "..." .. dir:sub(#dir - tail_len + 1) .. tail
+end
+
 return {
   'nvim-telescope/telescope.nvim',
   tag = 'v0.1.9',
@@ -10,9 +30,9 @@ return {
   },
   config = function()
     require("telescope").setup({
-      path_display = { "smart" },
       file_ignore_patterns = { "node_modules" },
       defaults = {
+        path_display = middle_truncate_path,
         dynamic_preview_title = true,
         layout_config = {
           horizontal = {
@@ -25,13 +45,13 @@ return {
       },
       pickers = {
       live_grep = {
-                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    file_ignore_patterns = { 'node_modules', '%.git/', '.venv' },
                     additional_args = function(_)
                         return { "--hidden" }
                     end
                 },
                 find_files = {
-                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    file_ignore_patterns = { 'node_modules', '%.git/', '.venv' },
                     hidden = true
                 },
       },
