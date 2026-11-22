@@ -1,3 +1,4 @@
+import argparse
 import copy
 import json
 import os
@@ -7,14 +8,25 @@ import subprocess
 import sys
 import uuid
 
-sys.path.insert(0, sys.argv[2])
+parser = argparse.ArgumentParser(
+    usage="curl -fsSL https://azmy60.github.io/dotfiles/install.sh | bash -s -- [options]",
+    description="Installs Arch Linux with these dotfiles. Run it from the Arch live ISO.",
+)
+# install.sh passes these two before the user's options.
+parser.add_argument("mirror", help=argparse.SUPPRESS)
+parser.add_argument("questionary_wheel", help=argparse.SUPPRESS)
+parser.add_argument("-y", "--yes", action="store_true", help="accept every default without prompting")
+parser.add_argument("--dry-run", action="store_true", help="go through the prompts without running archinstall")
+args = parser.parse_args()
+
+sys.path.insert(0, args.questionary_wheel)
 import questionary
 
 
 def main():
-    mirror = sys.argv[1]
-    dry_run = "--dry-run" in sys.argv[3:]
-    yes = "-y" in sys.argv[3:] or "--yes" in sys.argv[3:]
+    mirror = args.mirror
+    dry_run = args.dry_run
+    yes = args.yes
 
     def ask(questions):
         if not yes:
@@ -249,6 +261,7 @@ def main():
         "/etc/arch-bootstrap/nix/flake.lock": "flake.lock",
         "/etc/systemd/system/ufw-allow-ssh.service": "ufw-allow-ssh.service",
         "/etc/systemd/system/nix-setup.service": "nix-setup.service",
+        "/etc/systemd/system/llama-setup.service": "llama-setup.service",
         "/etc/skel/.zshrc": "zshrc",
         "/etc/xdg/hypr/hyprland.lua": "hyprland.lua",
         "/etc/gitconfig": "gitconfig",

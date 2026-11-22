@@ -4,7 +4,8 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      flavour = 'macchiato',
+      -- flavour = 'latte',
+      flavour = 'frappe',
       transparent_background = true,
     },
     init = function()

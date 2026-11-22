@@ -1,0 +1,16 @@
+[Unit]
+Description=Install llama for each user on first boot
+Wants=network-online.target
+# The installer picks a CUDA, ROCm or Vulkan build by probing the GPU, so drivers must be up.
+After=network-online.target systemd-modules-load.service
+Before=systemd-user-sessions.service
+
+[Service]
+Type=oneshot
+TimeoutStartSec=infinity
+StandardOutput=journal+console
+ExecStart=/usr/bin/bash -c 'for user in $$(getent passwd | awk -F: "\\$$3 >= 1000 && \\$$3 < 60000 {print \\$$1}"); do runuser -l "$$user" -c "curl -LsSf https://llama.app/install.sh | sh"; done'
+ExecStartPost=/usr/bin/systemctl disable llama-setup.service
+
+[Install]
+WantedBy=multi-user.target

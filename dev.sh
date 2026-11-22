@@ -3,11 +3,6 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-if curl -fsS -o /dev/null http://localhost:8000 2>/dev/null; then
-  echo "Port 8000 is already in use." >&2
-  exit 1
-fi
-
 mkdir -p data
 if [[ ! -e data/archlinux.iso ]]; then
   (cd data && quickget archlinux latest)
@@ -19,16 +14,31 @@ fi
 mkdir -p pacoloco/cache
 PACOLOCO_UID=$(id -u) PACOLOCO_GID=$(id -g) docker compose up -d
 
-python3 -m http.server 8000 --bind 127.0.0.1 -d . &
-server=$!
-trap 'kill $server 2>/dev/null || true' EXIT
+if [[ -e data/disk.qcow2 ]]; then
+  quickemu --vm quickemu.conf --delete-disk
+fi
+# The live ISO's cloud-init reads this at boot and mounts the repo share and links install.dev.sh into /root.
+mkdir -p data/cidata
+echo "instance-id: arch-bootstrap-dev" >data/cidata/meta-data
+cat >data/cidata/user-data <<EOF
+#cloud-config
+runcmd:
+  - [mount, -m, -t, 9p, Public-${USER,,}, /s]
+  - [ln, -s, /s/install.dev.sh, /root/install.dev.sh]
+EOF
+genisoimage -quiet -output data/cidata.iso -volid cidata -joliet -rock data/cidata/user-data data/cidata/meta-data
 
-until curl -fsS -o /dev/null http://localhost:8000/install.sh 2>/dev/null; do
-  if ! kill -0 $server 2>/dev/null; then
-    exit 1
-  fi
-  sleep 0.1
+trap 'quickemu --vm quickemu.conf --kill >/dev/null 2>&1 || true' EXIT
+quickemu --vm quickemu.conf --public-dir "$PWD"
+
+cat <<EOF
+
+In the live ISO, run:
+
+  ./install.dev.sh
+
+EOF
+
+while kill -0 "$(cat data/quickemu.pid 2>/dev/null)" 2>/dev/null; do
+  sleep 1
 done
-
-echo "Ready!"
-wait $server

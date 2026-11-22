@@ -17,10 +17,11 @@ curl -fsSLO "$REPO/flake.nix"
 curl -fsSLO "$REPO/flake.lock"
 curl -fsSLO "$REPO/ufw-allow-ssh.service"
 curl -fsSLO "$REPO/nix-setup.service"
+curl -fsSLO "$REPO/llama-setup.service"
 curl -fsSL "$REPO/.zshrc" -o zshrc
 curl -fsSLO "$REPO/hyprland.lua"
 curl -fsSLO "$REPO/gitconfig"
-curl -fsSLO "$REPO/tmux.conf"
+curl -fsSL "$REPO/.tmux.conf" -o tmux.conf
 curl -fsSLO "$REPO/ghostty.config"
 
 # Runs inside the new system at the end of archinstall.
@@ -56,6 +57,7 @@ git clone --depth 1 --branch v3.1.0 https://github.com/tmux-plugins/tpm /usr/sha
 systemctl enable ufw-allow-ssh.service
 
 systemctl enable nix-setup.service
+systemctl enable llama-setup.service
 EOF
 
 # stdin is the piped script, so prompts must read from the terminal.

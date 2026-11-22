@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export REPO=http://10.0.2.2:8000
+dir=$(dirname "$(realpath "$0")")
+export REPO=file://$dir
 export MIRROR='http://10.0.2.2:9129/repo/archlinux/$repo/os/$arch'
 export SKIP_COUNTDOWN=1
 export ARCHINSTALL_FLAGS='--skip-wkd --skip-ntp --skip-version-check --no-pkg-lookups'
@@ -15,4 +16,4 @@ if mountpoint -q /mnt; then
   umount -R /mnt
 fi
 
-curl -fsSL "$REPO/install.sh" | bash -s -- "$@"
+bash "$dir/install.sh" "$@"

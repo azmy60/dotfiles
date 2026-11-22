@@ -196,6 +196,11 @@ local vtsls_config = {
 }
 
 local vue_ls_config = {
+  init_options = {
+    typescript = {
+      tsdk = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/typescript/lib',
+    },
+  },
   on_init = function(client)
     client.handlers['tsserver/request'] = function(_, result, context)
       local clients = vim.lsp.get_clients { bufnr = context.bufnr, name = 'vtsls' }
@@ -230,5 +235,5 @@ vim.lsp.config('emmet_ls', {})
 vim.lsp.config('vtsls', vtsls_config)
 vim.lsp.config('vue_ls', vue_ls_config)
 vim.lsp.config('cssls', {})
-vim.lsp.config('ruby-lsp', {})
-vim.lsp.enable({"vtsls", "vue_ls", "emmet_ls", "cssls", "ruby-lsp", 'blueprint_ls', 'gdscript'})
+vim.lsp.config('ruby_lsp', {})
+vim.lsp.enable({"vtsls", "vue_ls", "emmet_ls", "cssls", "ruby_lsp", 'blueprint_ls', 'gdscript'})

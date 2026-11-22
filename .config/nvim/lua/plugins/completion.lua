@@ -1,5 +1,16 @@
 return {
-  { 'ggml-org/llama.vim' },
+  {
+    'ggml-org/llama.vim',
+    init = function()
+      vim.g.llama_config = {
+        keymap_fim_trigger  = "",
+        keymap_fim_accept_word = "",
+        keymap_inst_trigger  = "",
+        keymap_inst_retry    = "",
+        keymap_inst_continue = ""
+      }
+    end
+  },
   {
     "hrsh7th/nvim-cmp",
     -- load cmp on InsertEnter
@@ -12,7 +23,7 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-calc",
-      "jcha0713/cmp-tw2css",
+      -- "jcha0713/cmp-tw2css",
     },
     config = function()
       local cmp = require 'cmp'

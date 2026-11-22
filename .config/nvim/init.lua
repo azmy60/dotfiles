@@ -62,19 +62,39 @@ vim.keymap.set("n", "ch", "c0")
 -- jump between whitespaces in the same line
 vim.keymap.set('n', 'gl', 'f<Space>', { noremap = true })
 
+vim.api.nvim_create_user_command("ToggleWrap", function()
+  local wrap = not vim.wo.wrap
+  vim.opt_local.wrap = wrap
+  vim.opt_local.linebreak = wrap
+  vim.opt_local.breakindent = false
+end, {})
+
+-- Neovim requires user commands to start with a capital letter.
+vim.cmd([[cnoreabbrev <expr> togglewrap getcmdtype() == ':' && getcmdline() == 'togglewrap' ? 'ToggleWrap' : 'togglewrap']])
+
+for key, visual_key in pairs({ j = "gj", k = "gk", ["<Down>"] = "gj", ["<Up>"] = "gk" }) do
+  vim.keymap.set({ "n", "x" }, key, function()
+    -- A count still means real lines, so relative line numbers stay accurate.
+    if vim.wo.wrap and vim.v.count == 0 then
+      return visual_key
+    end
+    return key
+  end, { expr = true })
+end
+
 vim.g.lazyvim_ruby_lsp = "ruby_lsp"
 vim.g.lazyvim_ruby_formatter = "rubocop"
 
 require("config.lazy")
 
-require('nvim-treesitter.configs').setup {
-  auto_install = true,
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false
-  },
-  indent = { enable = true },
-}
+-- require('nvim-treesitter.configs').setup {
+--   auto_install = true,
+--   highlight = {
+--     enable = true,
+--     additional_vim_regex_highlighting = false
+--   },
+--   indent = { enable = true },
+-- }
 
 require("lsp")
 require("autocmd")
